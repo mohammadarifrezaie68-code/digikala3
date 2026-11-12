@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">این می توانید به  راجستر نماید</h1>
+            <p class="lead fw-normal text-white-50 mb-0">اینجا یک فورم است که شما باید تمام اطلاعات خودر را بینوسید</p>
+        </div>
+    </div>
+</header>
+<form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    
+    <!-- فیلد نام کاربری -->
+    <input type="text" name="username" class="form-control" placeholder="نام کاربری">
+    
+    <!-- فیلد رمز عبور (باید دقیقاً name="password" باشد) -->
+    <input type="password" name="password" class="form-control" placeholder="رمز عبور">
+    
+    <button type="submit">ورود</button>
+</form>
+
+{% endblock  %}%

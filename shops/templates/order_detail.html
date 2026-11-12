@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <center>
+            <h3>جزییات سفارش</h3>
+         <br>
+            <div class="card">
+                <div class="card-header">
+                    سفارش {{ order.id }} - {{ order.amount_paid |intcomma }} افغانی
+                    <div class="card-body">
+                        به نام :{{ order.full_name }} <br>
+                        ایمیل : {{ order.email }} <br>
+                        آدرس:   {{order.shipping_address}} <br>
+                        تاریخ ثبت : {{order.date_ordere|date:"Y-m-d H:i:s"}} <br>
+                        آخرین ویرایش :{{order.date_ordere|date:"Y-m-d H:i:s"}} <br>
+                        وضعیت : {{order.status}}
+
+                        <hr>
+                        کالاها : <br>
+                        {% for item in items %}
+                        {{ item.product }} | تعداد {{item.quantity }} عدد | {{item.price|intcomma }} افغانی <br>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+                <a href="{% url 'user_order' %}" class="btn btn-primary">بازگشت به سفارشات</a>
+            </div>
+            
+        </center>
+    </div>
+</div>
+
+{% endblock  %}%

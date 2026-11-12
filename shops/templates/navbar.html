@@ -1,0 +1,59 @@
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="{% url 'botstrab' %}">بودسترب</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">خانه</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> درباره ما</a></li>
+                
+                {% if user.is_authenticated %}
+                
+                    <!-- User Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="userNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">حساب کاربری</a>
+                        <ul class="dropdown-menu" aria-labelledby="userNavbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'update_user' %}">پروفایل کاربری</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'update_info' %}">اطلاعات کاربری</a></li>
+                            <li><a class="dropdown-item" href="{% url 'user_order' %}">صفارشات</a></li>
+                       
+                        </ul>
+                    </li>
+                    <!-- Separate Nav Items for profile and logout -->
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">خارج شدن</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">واریدشدن</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'sinup' %}">ثبت کردن</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'search' %}">جستجو</a></li>
+                {% endif %}
+                
+                <!-- Purchase Categories Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="shopNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">خرید</a>
+                    <ul class="dropdown-menu" aria-labelledby="shopNavbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'cat_product' %}">دسته بندی ها</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'کمپیوتر' %}">لپ تاپ ها</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'سویچ' %}">سویچ ها</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'روتر' %}">روتر ها</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'موبایل' %}">موبایل ها</a></li> 
+                        <li><a class="dropdown-item" href="{% url 'category' 'اکسس پوینت' %}">اکسس پوینت ها</a></li> 
+                    </ul>
+                </li>
+            </ul>
+            
+            <!-- Shopping Cart Button -->
+            <form class="d-flex">
+                <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark">
+                    <i class="fa-solid fa-cart-shopping me-1"></i>
+                     سبد خرید
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">{{ cart|length }}</span>
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>

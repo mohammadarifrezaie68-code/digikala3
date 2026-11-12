@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<!-- هدر اصلی بدون تغییر در ساختار متنی -->
+<header class="bg-dark py-5 mb-5 shadow-sm">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">جستجو محصولات</h1>
+            <p class="lead fw-normal text-white-50 mb-0">دنبال چه می گردی</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-11">
+            <!-- کارت فرم جستجو -->
+            <div class="card mb-5">
+                <div class="card-header text-end">جستجو</div>
+                <div class="card-body">
+                    <form action="{% url 'search' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control text-end" placeholder="بیهوده نگشت که آن کم شده دیگه پیدانمی شود" name="searched">
+                        <br>
+                        <button type="submit" class="btn btn-primary">جستجو</button>
+                    </form>
+                </div>
+            </div>
+
+            {% if searched %}
+                <!-- ردیف واکنش‌گرا برای چیدمان کارت‌ها -->
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+                {% for item in products %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <!-- نشان تخفیف (فقط اگر محصول قیمت تخفیف داشته باشد نمایش داده می‌شود) -->
+                            {% if item.sale_price %}
+                                <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem; z-index: 10;">تخفیف ویژه</div>
+                            {% endif %}
+                            
+                            <!-- تصویر محصول مشترک و یکسان برای همه حالت‌ها (تضمین وضوح و سایز یکدست) -->
+                            <div style="height: 180px; background-color: #ffffff; padding: 5px;" class="rounded-top d-flex align-items-center justify-content-center">
+                                <img class="card-img-top" 
+                                     src="{{ item.picture.url }}" 
+                                     alt="{{ item.name }}" 
+                                     style="max-height: 100%; max-width: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;" />
+                            </div>
+
+                            <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                                <div>
+                                    <!-- نام محصول -->
+                                    <h5 class="fw-bolder mb-2">{{ item.name }}</h5>
+                                    
+                                    <!-- نمایش توضیحات کوتاه برای همه محصولات جهت هماهنگی باکس‌ها -->
+                                    <p class="text-muted small text-truncate mb-2">
+                                        {% if item.description %}{{ item.description }}{% else %}بدون توضیحات{% endif %}
+                                    </p>
+                                    
+                                    <!-- ستاره‌ها -->
+                                    <div class="d-flex justify-content-center small text-warning mb-3"> 
+                                        {% with ''|center:item.star as range %} 
+                                            {% for _ in range %}
+                                                <div class="bi-star-fill mx-0.5"></div>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                                
+                                <!-- بخش قیمت‌ها -->
+                                <div class="mt-auto">
+                                    {% if item.sale_price %}
+                                        <strike class="text-muted small">{{ item.price|intcomma }} افغانی</strike><br>
+                                        <span class="text-success fw-bold fs-5">{{ item.sale_price|intcomma }} افغانی</span>
+                                    {% else %}
+                                        <span class="fw-bold fs-5">{{ item.price|intcomma }} افغانی</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- دکمه صفحه محصول -->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
+                                <a class="btn btn-outline-dark mt-auto w-100" href="{% url 'product' item.id %}">صفحه محصول</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center w-100">
+                        <p class="alert alert-warning">هیچ محصولی پیدا نشد.</p>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+
+         </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

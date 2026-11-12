@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="card mb-3" >
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ product.picture.url }}" class="img-fluid rounded-start" alt=".">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.description }}</p>
+       
+       {% if product.is_sale %}
+       <p class="card-text">قمت<strike>{{ product.price  }}</strike>-{{ product.sale_price }}</p>
+       {% else %}
+        <p class="card-text">قمت: {{ product.price }}</p>
+       {% endif %}
+       تعداد
+       {% comment %} حالا ما می خاهم به این لست مان دست رسی داشته باشیم که یک آیدی می دهیم {% endcomment %}
+       تعداد:
+       <select name="form-select" id='cart-qty'>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">100</option>
+       </select>
+       <br><br>
+      <button class="btn btn-secondary" type="button" value='{{ product.id }}' id='add-cart'>
+    اضافه کردن به سبد خرید
+      </button>
+       <a href="{% url "home" %}" class="btn btn-secondary">برو به صفحه اصلی</a> 
+      </div>
+      </div>
+      </div>
+    </div>
+   </div>
+ 
+   <br><br><br> <br> <br> <br>
+      
+
+  <script>
+    $(document).on('click', '#add-cart', function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_add' %}",
+            data: {
+             //در اینجا آیدی محصول را گرفتیم از دیتابیس
+                product_id: $('#add-cart').val(),
+                //حالا می خاهیم دعداد آن را بگیریم
+                product_qty: $('#cart-qty option:selected').text(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post' // تکرار اضافی حذف شد
+            },
+            success: function(json) {
+                // نام محصول اصلاح شده بر اساس ویو جدید
+                alert("محصول با موفقیت اضافه شد: " + json.product_name);
+                document.getElementById('cart_quantity').textContent = json.qty;
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(errmsg);
+            }
+        });
+    });
+</script>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+</div>
+{% endblock  %}%
